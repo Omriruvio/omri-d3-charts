@@ -1,56 +1,76 @@
-import * as d3 from "d3-scale";
-import { TimeSeries } from "./Area";
+import { ChartData } from '../../types/global';
+import { calcTableMinMaxValues } from '../../utils/globalUtils';
+import * as d3 from 'd3-scale';
 
-export function parseTimeSeries<T = any>(
-  timeSeries: TimeSeries<T>,
-  height: number,
-  width: number,
-  strokeWidth = 0,
-  timestampAccessor: (dataPoint: T) => number,
-  valueAccessor: (dataPoint: T) => number
-) {
-  const { minX, maxX, minY, maxY } = timeSeries.reduce<{
-    minX: number;
-    maxX: number;
-    minY: number;
-    maxY: number;
-  }>(
-    (minMax, current) => {
-      const minX = Math.min(timestampAccessor(current), minMax.minX);
-      const maxX = Math.max(timestampAccessor(current), minMax.maxX);
-      const minY = Math.min(valueAccessor(current), minMax.minY);
-      const maxY = Math.max(valueAccessor(current), minMax.maxY);
-      return { minX, maxX, minY, maxY };
-    },
-    { minX: Infinity, maxX: -Infinity, minY: Infinity, maxY: -Infinity }
-  );
+export function calcAreaConfig<T extends any>({
+  data,
+  svgViewBoxHeight,
+  svgViewBoxWidth,
+  strokeWidth,
+  xValue,
+  yValue,
+}: {
+  data: ChartData<T>;
+  svgViewBoxHeight: number;
+  svgViewBoxWidth: number;
+  strokeWidth: number;
+  xValue: (dataPoint: T) => number;
+  yValue: (dataPoint: T) => number;
+}) {
+  const { minX, maxX, minY, maxY } = calcTableMinMaxValues({
+    data: data,
+    height: svgViewBoxHeight,
+    width: svgViewBoxWidth,
+    strokeWidth,
+    xAxisAccessor: xValue,
+    yAxisAccessor: yValue,
+  });
 
-  const xScale = d3.scaleUtc(
-    [minX, maxX],
-    [0 - strokeWidth / 2, width + strokeWidth / 2]
-  );
-  const yScale = d3.scaleLinear(
-    [minY, maxY],
-    [0 + strokeWidth / 2, height - strokeWidth / 2]
-  );
+  const xScale = d3.scaleUtc([minX, maxX], [0 - strokeWidth / 2, svgViewBoxWidth + strokeWidth / 2]);
+  const yScale = d3.scaleLinear([minY, maxY], [0 + strokeWidth / 2, svgViewBoxHeight - strokeWidth / 2]);
 
-  const { polygonString, strokePath } = timeSeries.reduce<{
+  const polygons = data.reduce<{
     polygonString: string;
     strokePath: string;
   }>(
     (acc, current) => {
-      const x = xScale(timestampAccessor(current));
-      const y = height - yScale(valueAccessor(current));
+      const x = xScale(xValue(current));
+      const y = svgViewBoxHeight - yScale(yValue(current));
       const coordinates = `${x},${y} `;
       acc.strokePath += `L${x} ${y} `;
       acc.polygonString += coordinates;
       return acc;
     },
-    { polygonString: `0,${height} `, strokePath: "" }
+    { polygonString: `0,${svgViewBoxHeight} `, strokePath: '' },
   );
 
-  return {
-    polygonString: polygonString.concat(`${width},${height}`),
-    strokePath: "M".concat(strokePath.slice(1))
-  };
+  const polygonString = polygons.polygonString.concat(`${svgViewBoxWidth},${svgViewBoxHeight}`);
+  const strokePath = 'M'.concat(polygons.strokePath.slice(1));
+  return { polygonString, strokePath };
 }
+
+// export function calcProgressConfig<T extends any>({
+//   data,
+//   svgViewBoxHeight,
+//   svgViewBoxWidth,
+//   xValue,
+//   yValue,
+// }: {
+//   data: TimeSeries<T>;
+//   svgViewBoxHeight: number;
+//   svgViewBoxWidth: number;
+//   strokeWidth: number;
+//   xValue: (dataPoint: T) => number;
+//   yValue: (dataPoint: T) => number;
+// }) {
+//   const { minX, maxX, minY, maxY } = calcTableMinMaxValues({
+//     data: data,
+//     height: svgViewBoxHeight,
+//     width: svgViewBoxWidth,
+//     xAxisAccessor: xValue,
+//     yAxisAccessor: yValue,
+//   });
+
+//   const xScale = d3.scaleUtc([minX, maxX], [0, svgViewBoxWidth]);
+//   return { xScale };
+// }
