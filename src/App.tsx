@@ -1,31 +1,31 @@
-import { Area, TimeSeries } from "./Components/Area";
+import { Area, TimeSeries } from "./Components/Area/Area";
 import "./styles.css";
 
-const timeSeries: TimeSeries = [
-  { ts: new Date(2023, 8, 24, 14, 0).valueOf(), value: 20 },
-  { ts: new Date(2023, 8, 24, 14, 10).valueOf(), value: 40 },
-  { ts: new Date(2023, 8, 24, 14, 20).valueOf(), value: 60 },
-  { ts: new Date(2023, 8, 24, 14, 40).valueOf(), value: 65 },
-  { ts: new Date(2023, 8, 24, 14, 50).valueOf(), value: 75 },
-  { ts: new Date(2023, 8, 24, 15, 30).valueOf(), value: 90 },
-  { ts: new Date(2023, 8, 24, 15, 32).valueOf(), value: 60 }
+const timeSeries: TimeSeries<{timestamp: number, val: number}> = [
+  { timestamp: new Date(2023, 8, 24, 14, 0).valueOf(), val: 20 },
+  { timestamp: new Date(2023, 8, 24, 14, 10).valueOf(), val: 40 },
+  { timestamp: new Date(2023, 8, 24, 14, 20).valueOf(), val: 60 },
+  { timestamp: new Date(2023, 8, 24, 14, 40).valueOf(), val: 65 },
+  { timestamp: new Date(2023, 8, 24, 14, 50).valueOf(), val: 75 },
+  { timestamp: new Date(2023, 8, 24, 15, 30).valueOf(), val: 90 },
+  { timestamp: new Date(2023, 8, 24, 15, 32).valueOf(), val: 60 }
 ];
 
 export default function App() {
   return (
-    <div className="App">
+    <>
       <Area
-        timeSeries={timeSeries}
+        data={timeSeries}
         stroke="teal"
         strokeWidth={3}
         gradient={{
-          startColor: "rgb(44, 217, 253)",
-          startOpacity: 0.75,
-          endColor:  "rgb(44, 217, 253)",
-          endOpacity: 0.2
+          startColor: "rgba(44, 217, 253, 0.75)",
+          endColor:  "rgba(44, 217, 253, 0.2)",
         }}
+        xValue={(d) => d.timestamp}
+        yValue={(d) => d.val}
       />
-      <Area timeSeries={timeSeries} stroke="black" fill="#ccc" />
-    </div>
+      <Area data={timeSeries} stroke="black" fill="#ccc" xValue={d => d.timestamp} yValue={d => d.val} />
+    </>
   );
 }
