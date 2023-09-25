@@ -17,8 +17,13 @@ export default function App() {
       <Area
         timeSeries={timeSeries}
         stroke="teal"
-        fill="skyblue"
-        strokeWidth={2}
+        strokeWidth={3}
+        gradient={{
+          startColor: "rgb(44, 217, 253)",
+          startOpacity: 0.75,
+          endColor:  "rgb(44, 217, 253)",
+          endOpacity: 0.2
+        }}
       />
       <Area timeSeries={timeSeries} stroke="black" fill="#ccc" />
     </div>

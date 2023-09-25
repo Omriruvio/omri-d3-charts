@@ -1,5 +1,5 @@
-import { TimeSeries } from "./App";
 import * as d3 from "d3-scale";
+import { TimeSeries } from "./Components/Area";
 
 export function parseTimeSeries(
   timeSeries: TimeSeries,
