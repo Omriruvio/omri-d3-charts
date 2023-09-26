@@ -1,4 +1,5 @@
 import { Area } from './Components/Area/Area';
+import { Triangle } from './Components/General/Trinalgle';
 import { Progress } from './Components/Progress/Progress';
 import './styles.css';
 import { ChartData } from './types/global';
@@ -21,6 +22,8 @@ const progressData = [
   { value: 75 },
   { value: 90 },
   { value: 60 },
+  { value: 100 },
+  { value: 0 },
 ];
 
 export default function App() {
@@ -38,7 +41,33 @@ export default function App() {
         yValue={(d) => d.y}
       />
       <Area data={timeSeries} stroke='black' fill='#ccc' xValue={(d) => d.x} yValue={(d) => d.y} />
-      <Progress data={progressData} axisCrossLineWidth={2} />
+      <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-evenly' }}>
+        <Progress
+          width={800}
+          data={progressData}
+          axisCrossLineWidth={2}
+          renderXValue={(d) => (d.value < 50 ? <Triangle fillColor='#FF9393' /> : <Triangle />)}
+          ticks={[
+            { position: 0, label: '0%' },
+            { position: 10, label: '' },
+            { position: 20, label: '20%' },
+            { position: 30, label: '' },
+            { position: 40, label: '' },
+            { position: 50, label: '50%' },
+            { position: 60, label: '' },
+            { position: 70, label: '' },
+            { position: 80, label: '80%' },
+            { position: 90, label: '' },
+            { position: 100, label: '100%' },
+          ]}
+        />
+        <Progress
+          width={500}
+          data={progressData}
+          axisCrossLineWidth={2}
+          renderXValue={(d) => (d.value > 50 ? <Triangle fillColor='#FF9393' /> : <Triangle />)}
+        />
+      </div>
     </>
   );
 }

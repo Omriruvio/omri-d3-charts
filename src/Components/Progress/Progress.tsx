@@ -1,6 +1,7 @@
 import { CSSProperties, useMemo } from 'react';
 import { BaseChartProps } from '../../types/global';
 import { defaultTicks } from './progressUtils';
+import { Triangle } from '../General/Trinalgle';
 
 // reference https://docs.google.com/presentation/d/1xnfRDtsjX_Fah45z-JtIgrJf6UVhI6H3/edit#slide=id.p1
 
@@ -27,10 +28,13 @@ export type ProgressProps<T> = Omit<BaseChartProps<T>, 'yValue'> & {
   axisLabelColor?: CSSProperties['fill'];
   /** Optional: Label padding */
   labelPadding?: number;
+  /** Optional: Render function for the x value */
+  renderXValue?: (dataPoint: T) => JSX.Element;
 };
 
 export const Progress = <T extends any>({
   data,
+  renderXValue = (dataPoint: T) => <Triangle />,
   width = 0,
   height = 200,
   xValue = (dataPoint: T | any) => dataPoint.value as number,
@@ -101,12 +105,10 @@ export const Progress = <T extends any>({
               left: leftPosition,
               top: '50%',
               transform: 'translateX(-50%) translateY(-50%)',
-              width: '10px',
-              height: '10px',
-              backgroundColor: 'blue',
-              borderRadius: '50%',
             }}
-          ></div>
+          >
+            {renderXValue(dataPoint)}
+          </div>
         );
       })}
     </div>
