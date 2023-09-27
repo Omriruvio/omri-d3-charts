@@ -1,5 +1,6 @@
 import { CSSProperties, useMemo } from 'react';
 import { parseTimeSeries } from './areaUtils';
+import { BaseChartProps } from '../../types/global';
 
 export type DefaultDataPoint = {
   ts: number;
@@ -15,13 +16,7 @@ export type GradientProps = {
   endOpacity?: number;
 };
 
-export type AreaProps<T = DefaultDataPoint> = {
-  /** Time series data to be visualized */
-  data: TimeSeries<T>;
-  /** Optional: Width of the SVG (default = 100%) */
-  width?: number;
-  /** Optional: Height of the SVG (default = 200) */
-  height?: number;
+export type AreaProps<T = DefaultDataPoint> = BaseChartProps<T> & {
   /** Optional: Fill color (default = transparent) */
   fill?: CSSProperties['fill'];
   /** Optional: Stroke color (default = transparent) */
@@ -30,12 +25,10 @@ export type AreaProps<T = DefaultDataPoint> = {
   strokeWidth?: number;
   /** Optional: Gradient definition */
   gradient?: GradientProps;
-  /** Optional: Accessor function for the x axis value (default = (d) => d.ts) */
-  xValue?: (dataPoint: T) => number;
-  /** Optional: Accessor function for the y axis value (default = (d) => d.value) */
-  yValue?: (dataPoint: T) => number;
   /** Optional: Custom Y domain e.g. [0, 100] */
   yDomain?: [number, number];
+  /** Optional: Y value accessor function */
+  yValue?: (dataPoint: T) => number;
 };
 
 export const Area = <T extends any>({

@@ -1,15 +1,11 @@
 import { CSSProperties, useMemo } from 'react';
-import { BaseChartProps } from '../../types/global';
-import { defaultTicks } from './progressUtils';
+import { BaseChartProps, ProgressTicks } from '../../types/global';
+import { defaultProgressTicks } from './progressUtils';
 import { Triangle } from '../General/Trinalgle';
-
-// reference https://docs.google.com/presentation/d/1xnfRDtsjX_Fah45z-JtIgrJf6UVhI6H3/edit#slide=id.p1
-
-export type Ticks = Array<{ position: number; label: string }>;
 
 export type ProgressProps<T> = Omit<BaseChartProps<T>, 'yValue'> & {
   /** Optional: Array of numbers representing the ticks positions and labels */
-  ticks?: Ticks;
+  ticks?: ProgressTicks;
   /** Optional: Axis line color (default = black) */
   axisColor?: CSSProperties['stroke'];
   /** Optional: Axis line width */
@@ -63,7 +59,7 @@ export const Progress = <T extends any>({
         xmlns='http://www.w3.org/2000/svg'
       >
         <path d={path} stroke={axisColor} strokeWidth={axisWidth} fill='none' />
-        {(ticks || defaultTicks)?.map((tick) => {
+        {(ticks || defaultProgressTicks)?.map((tick) => {
           const x = (tick.position / 100) * svgViewBoxWidth;
           const yPosition = svgViewBoxHeight - (axisCrossLineSize * 2 + axisLabelFontSize) - labelPadding;
           return (
@@ -79,7 +75,7 @@ export const Progress = <T extends any>({
           );
         })}
       </svg>
-      {(ticks || defaultTicks)?.map((tick) => (
+      {(ticks || defaultProgressTicks)?.map((tick) => (
         <div
           key={tick.position}
           style={{

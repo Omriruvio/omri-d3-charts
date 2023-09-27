@@ -1,6 +1,6 @@
-import { Ticks } from "./Progress";
+import { ProgressTicks } from "../../types/global"
 
-export const defaultTicks: Ticks = [
+export const defaultProgressTicks: ProgressTicks = [
   { position: 0, label: '0' },
   { position: 10, label: '' },
   { position: 20, label: '20' },
