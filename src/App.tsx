@@ -40,6 +40,18 @@ export default function App() {
         xValue={(d) => d.x}
         yValue={(d) => d.y}
       />
+      <Area
+        data={timeSeries}
+        stroke='teal'
+        strokeWidth={3}
+        gradient={{
+          startColor: 'rgba(44, 217, 253, 0.75)',
+          endColor: 'rgba(44, 217, 253, 0.2)',
+        }}
+        xValue={(d) => d.x}
+        yValue={(d) => d.y}
+        yDomain={[0, 100]}
+      />
       <Area data={timeSeries} stroke='black' fill='#ccc' xValue={(d) => d.x} yValue={(d) => d.y} />
       <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-evenly' }}>
         <Progress
