@@ -11,6 +11,7 @@ export type BarProps<T = Record<string, number>> = Omit<BaseChartProps<T>, 'yVal
   yValue?: (dataPoint: T) => number[];
   barColors?: CSSProperties['fill'][];
   xPadding?: number;
+  yPadding?: number;
   barScaleFactor?: number;
   barStrokeWidth?: number;
   barStrokeColor?: CSSProperties['stroke'];
@@ -27,15 +28,18 @@ export const Bar = <T extends Record<string, number>>({
   gridWidth = 1,
   gridMidColor = '#d4d4d4',
   gridMidStrokeDasharray = '2,4',
-  barColors = ['#FF9393', 'teal'],
+  barColors = ['#1e4e79', '#2cd9fd'],
   xPadding = 5,
+  yPadding = 10,
   barScaleFactor = 0.7,
   barStrokeWidth = 1,
   barStrokeColor = '#4a4a4a',
 }: BarProps<T>): JSX.Element => {
   const [svgViewBoxWidth, svgViewBoxHeight] = [500, 200];
   const gridTopPath = `M 0 0 L ${svgViewBoxWidth} 0`;
-  const gridMidPath = `M 0 ${svgViewBoxHeight / 2} L ${svgViewBoxWidth} ${svgViewBoxHeight / 2}`;
+  const gridMidPath = `M 0 ${(svgViewBoxHeight + yPadding) / 2} L ${svgViewBoxWidth} ${
+    (svgViewBoxHeight + yPadding) / 2
+  }`;
   const gridBottomPath = `M 0 ${svgViewBoxHeight} L ${svgViewBoxWidth} ${svgViewBoxHeight}`;
   const barWidth = (svgViewBoxWidth / data.length) * barScaleFactor;
 
@@ -45,7 +49,7 @@ export const Bar = <T extends Record<string, number>>({
     yAxisAccessor: yValue,
   });
 
-  const yScale = d3.scaleLinear(yDomain || [0, maxY], [0, svgViewBoxHeight * 0.95]);
+  const yScale = d3.scaleLinear(yDomain || [0, maxY], [0, svgViewBoxHeight - yPadding]);
   const xScale = d3.scaleLinear([minX, maxX], [xPadding, svgViewBoxWidth - barWidth - xPadding]);
 
   const barRenderData: Array<{

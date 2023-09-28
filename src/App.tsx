@@ -12,11 +12,12 @@ export default function App() {
         style={{
           display: 'grid',
           gridTemplateColumns: 'repeat(2, 1fr)',
-          gridGap: '20px',
+          gap: '50px',
           padding: '20px',
         }}
       >
-        <Bar data={barDataMock1} barColors={['#FF9393', 'teal']} yValue={(d) => [d.v1, d.v2]} />
+        <Bar data={[{ x: 1, v1: 10, v2: 20 }]} barColors={['#1e4e79', '#2cd9fd']} yValue={(d) => [d.v1, d.v2]} />
+        <Bar data={barDataMock1} barColors={['#1e4e79', '#2cd9fd']} yValue={(d) => [d.v1, d.v2]} />
         <Area
           data={timeSeriesMock1}
           stroke='teal'
