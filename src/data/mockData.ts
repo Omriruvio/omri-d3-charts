@@ -37,7 +37,7 @@ export const progressTicksDefault: ProgressTicks = [
 ]
 
 export const barDataMock1: ChartData<{ x: number; v1: number; v2: number }> = [
-  { x: 1, v1: 100, v2: 30 },
+  { x: 1, v1: 40, v2: 150 },
   { x: 2, v1: 30, v2: 15 },
   { x: 3, v1: 50, v2: 70 },
   { x: 4, v1: 60, v2: 80 },

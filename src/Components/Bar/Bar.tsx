@@ -25,7 +25,7 @@ export const Bar = <T extends Record<string, number>>({
   yValue = (dataPoint: T) => [dataPoint.val1, dataPoint.val2],
   yDomain,
   gridColor = '#6b6b6b',
-  gridWidth = 1,
+  gridWidth = 2,
   gridMidColor = '#d4d4d4',
   gridMidStrokeDasharray = '2,4',
   barColors = ['#1e4e79', '#2cd9fd'],
@@ -36,11 +36,6 @@ export const Bar = <T extends Record<string, number>>({
   barStrokeColor = '#4a4a4a',
 }: BarProps<T>): JSX.Element => {
   const [svgViewBoxWidth, svgViewBoxHeight] = [500, 200];
-  const gridTopPath = `M 0 0 L ${svgViewBoxWidth} 0`;
-  const gridMidPath = `M 0 ${(svgViewBoxHeight + yPadding) / 2} L ${svgViewBoxWidth} ${
-    (svgViewBoxHeight + yPadding) / 2
-  }`;
-  const gridBottomPath = `M 0 ${svgViewBoxHeight} L ${svgViewBoxWidth} ${svgViewBoxHeight}`;
   const barWidth = (svgViewBoxWidth / data.length) * barScaleFactor;
 
   const { minX, minY, maxX, maxY } = calcBarGraphMinMaxValues({
@@ -49,8 +44,13 @@ export const Bar = <T extends Record<string, number>>({
     yAxisAccessor: yValue,
   });
 
-  const yScale = d3.scaleLinear(yDomain || [0, maxY], [0, svgViewBoxHeight - yPadding]);
+  const calculatedYDomain = typeof yDomain === 'function' ? yDomain([minY, maxY]) : yDomain;
+  const yScale = d3.scaleLinear(calculatedYDomain || [0, maxY], [0, svgViewBoxHeight]);
   const xScale = d3.scaleLinear([minX, maxX], [xPadding, svgViewBoxWidth - barWidth - xPadding]);
+
+  const gridTopPath = `M 0 0 L ${svgViewBoxWidth} 0`;
+  const gridMidPath = `M 0 ${yScale(maxY / 2)} L ${svgViewBoxWidth} ${yScale(maxY / 2)}`;
+  const gridBottomPath = `M 0 ${svgViewBoxHeight} L ${svgViewBoxWidth} ${svgViewBoxHeight}`;
 
   const barRenderData: Array<{
     x: number;

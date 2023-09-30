@@ -23,6 +23,9 @@ export type BaseChartProps<T = DefaultChartItem> = {
   xValue?: (dataPoint: T) => number;
   /** Optional: Accessor function for the y axis value (default = (d) => d.value) */
   yValue?: (dataPoint: T) => number | number[];
-  /** Optional: Custom Y domain e.g. [0, 100] */
-  yDomain?: [number, number];
+  /**
+   * Optional: Custom Y domain e.g. [0, 100] or function to calculate the domain based on the extent
+   * @example ([min, max]) => [min, max * 1.1]
+   */
+  yDomain?: [number, number] | ((extent: [number, number]) => [number, number]);
 };

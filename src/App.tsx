@@ -16,8 +16,18 @@ export default function App() {
           padding: '20px',
         }}
       >
-        <Bar data={[{ x: 1, v1: 10, v2: 20 }]} barColors={['#1e4e79', '#2cd9fd']} yValue={(d) => [d.v1, d.v2]} />
-        <Bar data={barDataMock1} barColors={['#1e4e79', '#2cd9fd']} yValue={(d) => [d.v1, d.v2]} />
+        <Bar
+          data={[{ x: 1, v1: 20, v2: 25 }]}
+          barColors={['#1e4e79', '#2cd9fd']}
+          yValue={(d) => [d.v1, d.v2]}
+          yDomain={([min, max]) => [0, max * 1.1]}
+        />
+        <Bar
+          data={barDataMock1}
+          barColors={['#1e4e79', '#2cd9fd']}
+          yValue={(d) => [d.v1, d.v2]}
+          yDomain={([min, max]) => [0, max * 1.1]}
+        />
         <Area
           data={timeSeriesMock1}
           stroke='teal'

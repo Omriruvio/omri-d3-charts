@@ -8,7 +8,7 @@ export function parseTimeSeries<T = any>(
   strokeWidth = 0,
   timestampAccessor: (dataPoint: T) => number,
   valueAccessor: (dataPoint: T) => number,
-  customYDomain?: [number, number]
+  customYDomain?: [number, number] | ((extent: [number, number]) => [number, number])
 ) {
   const { minX, maxX, minY, maxY } = timeSeries.reduce<{
     minX: number;
@@ -30,8 +30,10 @@ export function parseTimeSeries<T = any>(
     [minX || timestampAccessor(timeSeries.at(0)), maxX || timestampAccessor(timeSeries.at(-1))],
     [0 - strokeWidth / 2, width + strokeWidth / 2]
   );
+
+  const customYDomainValue = typeof customYDomain === "function" ? customYDomain([minY, maxY]) : customYDomain;
   const yScale = d3.scaleLinear(
-    customYDomain || [minY, maxY],
+    customYDomainValue || [minY, maxY],
     [0 + strokeWidth / 2, height - strokeWidth / 2]
   );
 
