@@ -1,32 +1,31 @@
+import { useTheme } from './hooks/useTheme';
 import { Area } from './Components/Area/Area';
 import { Bar } from './Components/Bar/Bar';
 import { Triangle } from './Components/General/Trinalgle';
 import { Progress } from './Components/Progress/Progress';
 import { barDataMock1, progressDataMock1, progressTicksDefault, timeSeriesMock1 } from './data/mockData';
-import './styles.css';
+import './App.css'
 
-export default function App() {
+function App() {
+  const { theme, toggleTheme } = useTheme();
+
   return (
     <>
-      <div
-        style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(2, 1fr)',
-          gap: '50px',
-          padding: '20px',
-        }}
-      >
+      <div className='flex flex-row w-full justify-end'>
+        <button className='mt-2 mr-2' onClick={toggleTheme}>Switch to {theme === 'dark' ? 'light' : 'dark'} theme</button>
+      </div>
+      <div className='kitchen-sink-wrapper'>
         <Bar
           data={[{ x: 1, v1: 20, v2: 25 }]}
           barColors={['#1e4e79', '#2cd9fd']}
           yValue={(d) => [d.v1, d.v2]}
-          yDomain={([min, max]) => [0, max * 1.1]}
+          yDomain={([, max]) => [0, max * 1.1]}
         />
         <Bar
           data={barDataMock1}
           barColors={['#1e4e79', '#2cd9fd']}
           yValue={(d) => [d.v1, d.v2]}
-          yDomain={([min, max]) => [0, max * 1.1]}
+          yDomain={([, max]) => [0, max * 1.1]}
         />
         <Area
           data={timeSeriesMock1}
@@ -65,5 +64,7 @@ export default function App() {
         />
       </div>
     </>
-  );
+  )
 }
+
+export default App

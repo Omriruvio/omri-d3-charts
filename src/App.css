@@ -1,0 +1,10 @@
+.kitchen-sink-wrapper {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 50px;
+  padding: 20px;
+
+  @media (width < 1000px) {
+    grid-template-columns: repeat(1, 1fr);
+  }
+}
