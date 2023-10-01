@@ -28,4 +28,8 @@ export type BaseChartProps<T = DefaultChartItem> = {
    * @example ([min, max]) => [min, max * 1.1]
    */
   yDomain?: [number, number] | ((extent: [number, number]) => [number, number]);
+  yAxisPosition?: "left" | "right";
+  yAxisLabelFormatter?: (value: number) => string;
+  xAxisTicks?: number[];
+  yAxisTicks?: number[];
 };
