@@ -74,9 +74,9 @@ export const Bar = <T extends Record<string, number>>({
     const tickX = yAxisPosition === 'left' ? -xPadding : svgViewBoxWidth + xPadding;
     const tickY = svgViewBoxHeight - yScale(tick) - 10;
     return (
-      <text key={tick} x={tickX} y={tickY} textAnchor='end' fontSize={10} fill={gridColor}>
-        {yAxisLabelFormatter(tick)}
-      </text>
+      <foreignObject key={i} xmlns='http://www.w3.org/2000/svg' x={tickX} y={tickY} width={15} height={15}>
+        <div style={{ color: gridColor, fontSize: '10px' }}>{yAxisLabelFormatter(tick)}</div>
+      </foreignObject>
     );
   });
 
